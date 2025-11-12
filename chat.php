@@ -1,0 +1,3 @@
+<?php 
+//pagina del chat
+?>
