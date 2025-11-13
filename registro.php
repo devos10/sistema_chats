@@ -8,14 +8,14 @@
 <body>
     <h2>Registro</h2>
     <form action="procesos/registrar.php" method="POST">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br><br>
+        <label for="usuario">Usuario:</label>
+        <input type="text" id="usuario" name="usuario" required><br><br>
         
-        <label for="password">Password:</label>
-        <input type="password" id="email" name="password" required><br><br>
+        <label for="contraseña">Contraseña:</label>
+        <input type="password" id="contraseña" name="contraseña" required><br><br>
         
-        <label for="password_confirm">Confirmar Password:</label>
-        <input type="password" id="password" name="password_confirm" required><br><br>
+        <label for="contraseña_confirmar">Confirmar Contraseña:</label>
+        <input type="password" id="contraseña_confirmar" name="contraseña_confirmar" required><br><br>
         
         <input type="submit" value="Registrarse">
     </form>
