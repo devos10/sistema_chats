@@ -9,8 +9,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario_correcto=obtenerUsuarioPorNombre($usuario);
 
     if (!$usuario_correcto || !password_verify($contrasena, $usuario_correcto['contrasena'])) {
-        echo "Usuario o contraseña incorrectos.";
-        exit;
+            header('Location: ../index.php');
+             $_SESSION['error_login'] = "Usuario o contraseña incorrectos.";
+             header('Location: ../index.php');
+            exit;
     }
      if ($usuario_correcto && password_verify($contrasena, $usuario_correcto['contrasena'])) {
         // Login correcto

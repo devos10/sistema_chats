@@ -24,6 +24,10 @@
         echo '<p style="color:green;">' . $_SESSION['exito_creacion'] . '</p>';
         unset($_SESSION['exito_creacion']); // para que solo se vea una vez
     }
+    if (isset($_SESSION['error_login'])) {
+        echo '<p style="color:red;">' . $_SESSION['error_login'] . '</p>';
+        unset($_SESSION['error_login']); // para que solo se vea una vez
+    }
     ?>
     
 </body>
