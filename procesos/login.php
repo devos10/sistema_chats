@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
      if ($usuario_correcto && password_verify($contrasena, $usuario_correcto['contrasena'])) {
         // Login correcto
-        $_SESSION['id_usuario'] = $usuario_correcto['id'];
+        $_SESSION['id_usuario'] = $usuario_correcto['id_usuario'];
         $_SESSION['usuario']    = $usuario_correcto['usuario'];
         header('Location: ../chat.php');
         alerta('success',"Inicio de sesion correcto.");
