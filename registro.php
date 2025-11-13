@@ -26,6 +26,10 @@
         echo '<p style="color:red;">' . $_SESSION['error_registro'] . '</p>';
         unset($_SESSION['error_registro']); // para que solo se vea una vez
     }
+    if (isset($_SESSION['error_creacion'])) {
+        echo '<p style="color:red;">' . $_SESSION['error_creacion'] . '</p>';
+        unset($_SESSION['error_creacion']); // para que solo se vea una vez
+    }
     ?>
 </body>
 </html>

@@ -21,9 +21,14 @@ $contrasena_confirmar=$_POST['contraseña_confirmar'];
              //crear el usuario
         $resultado=crearUsuario($usuario,$contrasena);
         if($resultado){
-            echo "Usuario creado exitosamente.";
+             header('Location: ../index.php');
+             $_SESSION['exito_creacion'] = "Usuario creado exitosamente. Ahora puedes iniciar sesión.";
+             header('Location: ../index.php');
+            
         }else{
-            echo "Error al crear el usuario.";
+             header('Location: ../registro.php');
+             $_SESSION['error_creacion'] = "Error al crear el usuario. Inténtalo de nuevo.";
+             header('Location: ../registro.php');
         }
 
         }
