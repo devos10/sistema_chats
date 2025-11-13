@@ -12,8 +12,8 @@
         <label for="usuario">Usuario:</label>
         <input type="text" id="usuario" name="usuario" required><br><br>
         
-        <label for="contraseña">Contraseña:</label>
-        <input type="password" id="contraseña" name="contraseña" required><br><br>
+        <label for="contrasena">Contraseña:</label>
+        <input type="password" id="contrasena" name="contrasena" required><br><br>
         
         <input type="submit" value="Login">
     </form>
