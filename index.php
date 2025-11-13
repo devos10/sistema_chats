@@ -21,7 +21,7 @@
     <?php
         session_start();
     if (isset($_SESSION['exito_creacion'])) {
-        echo '<p style="color:red;">' . $_SESSION['exito_creacion'] . '</p>';
+        echo '<p style="color:green;">' . $_SESSION['exito_creacion'] . '</p>';
         unset($_SESSION['exito_creacion']); // para que solo se vea una vez
     }
     ?>
