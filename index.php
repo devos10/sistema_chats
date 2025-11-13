@@ -7,7 +7,9 @@
    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-
+<?php if (isset($_GET['logout']) && $_GET['logout'] == 1): ?>
+    <p style="color:green;">Has cerrado sesión correctamente.</p>
+<?php endif; ?>
     <h2>Login</h2>
     <form action="procesos/login.php" method="POST">
         <label for="usuario">Usuario:</label>
