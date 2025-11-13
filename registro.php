@@ -20,16 +20,9 @@
         <input type="submit" value="Registrarse">
     </form>
     <a href="index.php">Volver al Login</a>
-    <?php
+    <?php 
     session_start();
-    if (isset($_SESSION['error_registro'])) {
-        echo '<p style="color:red;">' . $_SESSION['error_registro'] . '</p>';
-        unset($_SESSION['error_registro']); // para que solo se vea una vez
-    }
-    if (isset($_SESSION['error_creacion'])) {
-        echo '<p style="color:red;">' . $_SESSION['error_creacion'] . '</p>';
-        unset($_SESSION['error_creacion']); // para que solo se vea una vez
-    }
-    ?>
+    include 'includes/alertas.php'; ?>
+  
 </body>
 </html>

@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/../db/UsuarioBD.php';
+require_once __DIR__ . '/../includes/agregar_alerta.php';
 //verificar si se ha enviado el formulario
 // Evita errores si se entra por GET o sin datos
 if ($_SERVER['REQUEST_METHOD'] === 'POST'){
@@ -14,21 +15,18 @@ $contrasena_confirmar=$_POST['contraseña_confirmar'];
     }else{
         if(obtenerUsuarioPorNombre($usuario)){
             header('Location: ../registro.php');
-             $_SESSION['error_registro'] = "El nombre de usuario ya existe. Por favor elige otro.";
-             header('Location: ../registro.php');
+             alerta('error',"El nombre de usuario ya existe. Por favor elige otro.");
             exit;
         }else{
              //crear el usuario
         $resultado=crearUsuario($usuario,$contrasena);
         if($resultado){
              header('Location: ../index.php');
-             $_SESSION['exito_creacion'] = "Usuario creado exitosamente. Ahora puedes iniciar sesión.";
-             header('Location: ../index.php');
+             alerta('success',"Usuario creado exitosamente. Ahora puedes iniciar sesión.");
             
         }else{
              header('Location: ../registro.php');
-             $_SESSION['error_creacion'] = "Error al crear el usuario. Inténtalo de nuevo.";
-             header('Location: ../registro.php');
+             alerta('error',"Error al crear el usuario. Inténtalo de nuevo.");
         }
 
         }
