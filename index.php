@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
@@ -18,17 +19,10 @@
         <input type="submit" value="Login">
     </form>
     <a href="registro.php">Registrarse</a>
-    <?php
-        session_start();
-    if (isset($_SESSION['exito_creacion'])) {
-        echo '<p style="color:green;">' . $_SESSION['exito_creacion'] . '</p>';
-        unset($_SESSION['exito_creacion']); // para que solo se vea una vez
-    }
-    if (isset($_SESSION['error_login'])) {
-        echo '<p style="color:red;">' . $_SESSION['error_login'] . '</p>';
-        unset($_SESSION['error_login']); // para que solo se vea una vez
-    }
-    ?>
-    
+    <!--Incluimos el archivo de las alertas-->
+    <?php 
+    session_start();
+    include 'includes/alertas.php'; ?>
+  
 </body>
 </html>

@@ -6,8 +6,11 @@
     <title>CHATS</title>
 </head>
 <body>
+
     <h2>Bienvenido al sistema de chats</h2>
     <p>Seleccione un chat para comenzar a conversar.</p>
-    
+    <?php 
+    session_start();
+    include 'includes/alertas.php'; ?>
 </body>
 </html>
