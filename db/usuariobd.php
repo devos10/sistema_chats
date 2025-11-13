@@ -1,16 +1,16 @@
 <?php 
-require_once __DIR__.'conexion.php';
+require_once __DIR__.'/conexion.php';
 
-function crearUsuario($usuario, $contraseñaPlano) {
+function crearUsuario($usuario, $contrasenaPlano) {
     $pdo = getConnection();
 
     // Hash de contraseña
-    $contraseñaHash = password_hash($contraseñaPlano, PASSWORD_DEFAULT);
+    $contrasenaHash = password_hash($contrasenaPlano, PASSWORD_DEFAULT);
 
-    $stmt = $pdo->prepare('INSERT INTO usuarios (usuario, contraseña) VALUES (:usuario, :contraseña)');
+    $stmt = $pdo->prepare('INSERT INTO usuario (usuario,contrasena) VALUES (:usuario, :contrasena)');
     return $stmt->execute([
         'usuario'  => $usuario,
-        'password' => $contraseñaHash
+        'contrasena' => $contrasenaHash
     ]);
 }
 
