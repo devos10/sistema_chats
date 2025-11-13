@@ -20,6 +20,12 @@
         <input type="submit" value="Registrarse">
     </form>
     <a href="index.php">Volver al Login</a>
-    
+    <?php
+    session_start();
+    if (isset($_SESSION['error_registro'])) {
+        echo '<p style="color:red;">' . $_SESSION['error_registro'] . '</p>';
+        unset($_SESSION['error_registro']); // para que solo se vea una vez
+    }
+    ?>
 </body>
 </html>
