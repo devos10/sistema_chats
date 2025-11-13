@@ -13,5 +13,13 @@ function crearUsuario($usuario, $contrasenaPlano) {
         'contrasena' => $contrasenaHash
     ]);
 }
+//funcion para verificar si el usuario existe
+function obtenerUsuarioPorNombre($usuario) {
+    $pdo = getConnection();
+
+    $stmt = $pdo->prepare('SELECT * FROM usuario WHERE usuario = :usuario');
+    $stmt->execute(['usuario' => $usuario]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
 
 ?>
