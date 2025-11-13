@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once __DIR__ . '/../db/UsuarioBD.php';
 //verificar si se ha enviado el formulario
 // Evita errores si se entra por GET o sin datos
@@ -11,13 +12,22 @@ $contrasena_confirmar=$_POST['contraseña_confirmar'];
         echo "Las contraseñas no coinciden.";
         exit;
     }else{
-        //crear el usuario
+        if(obtenerUsuarioPorNombre($usuario)){
+            header('Location: ../registro.php');
+             $_SESSION['error_registro'] = "El nombre de usuario ya existe. Por favor elige otro.";
+             header('Location: ../registro.php');
+            exit;
+        }else{
+             //crear el usuario
         $resultado=crearUsuario($usuario,$contrasena);
         if($resultado){
             echo "Usuario creado exitosamente.";
         }else{
             echo "Error al crear el usuario.";
         }
+
+        }
+       
     }
 
 } else {
