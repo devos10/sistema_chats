@@ -6,7 +6,7 @@ function getConnection() {
         $host = '127.0.0.1';
         $db   = 'chats';
         $user = 'root';
-        $pass = '100408ovc';
+        $pass = '';
         $charset = 'utf8mb4';
 
         $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
