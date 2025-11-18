@@ -22,4 +22,13 @@ function obtenerUsuarioPorNombre($usuario) {
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
+//funcion para obtener usuario por id
+function obtenerUsuarioPorId($id) {
+    $pdo = getConnection();
+
+    $stmt = $pdo->prepare('SELECT * FROM usuario WHERE id = :id');
+    $stmt->execute(['id_usuario' => $id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 ?>
