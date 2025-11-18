@@ -49,3 +49,16 @@ function agregarContacto(id_usuario) {
     // Implementa aquí la lógica para agregar el contacto
     console.log('Agregar contacto:', id_usuario);
 }
+
+//ocultar o mostrar contraseña
+function togglePassword() {
+    const pw = document.getElementById("contrasena");
+    const btn = document.querySelector(".toggle-pw");
+if (pw.type === "password") {
+    pw.type = "text";
+    btn.textContent = "Ocultar";
+    } else {
+        pw.type = "password";
+        btn.textContent = "Mostrar";
+    }
+}
