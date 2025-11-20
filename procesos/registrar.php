@@ -10,7 +10,8 @@ $contrasena=$_POST['contraseña'];
 $contrasena_confirmar=$_POST['contraseña_confirmar'];
 //validar que las contraseñas coincidan 
     if($contrasena !== $contrasena_confirmar){
-        echo "Las contraseñas no coinciden.";
+        header('Location: ../registro.php');
+        alerta('error', "Las contraseñas no coinciden.");
         exit;
     }else{
         if(obtenerUsuarioPorNombre($usuario)){

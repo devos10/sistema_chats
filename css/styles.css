@@ -118,19 +118,7 @@ input[type="submit"]:hover{
     background: linear-gradient(to right, var(--claro), var(--medio));
 }
 
-a {
-    color: #4facfe;
-    text-decoration: none;
-    font-weight: bold;
-    display: block;
-    text-align: center;
-    margin-top: 25px;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
+/* ALERTA CERRAR SESION */
 .alert {
     position: fixed;
     top: 10px;
@@ -144,4 +132,34 @@ a:hover {
     border-radius: 5px;
     background-color: var(--claro);
 }
+
+
+/* REGISTRO */
+
+.error-message {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 2px solid #f5c6cb;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* ENLACE */
+
+a {
+    color: #4facfe;
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+    text-align: center;
+    margin-top: 25px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
 
