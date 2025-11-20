@@ -51,9 +51,12 @@ function agregarContacto(id_usuario) {
 }
 
 //ocultar o mostrar contraseña
-function togglePassword() {
-    const pw = document.getElementById("contrasena");
-    const btn = document.querySelector(".toggle-pw");
+function togglePassword(inputId, button) {
+    //const pw = document.getElementById("contrasena");
+    //const btn = document.querySelector(".toggle-pw");
+    const pw = inputId ? document.getElementById(inputId) : document.getElementById("contrasena");
+    const btn = button ? button : document.querySelector(".toggle-pw");
+
 if (pw.type === "password") {
     pw.type = "text";
     btn.textContent = "Ocultar";
