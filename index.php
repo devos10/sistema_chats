@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (isset($_GET['logout']) && $_GET['logout'] == 1){
+    require_once 'includes/agregar_alerta.php';
+    alerta('info', 'Has cerrado sesión correctamente.');
+
+}
+?>
 <!DOCTYPE html>
 <html lang="es-MX">
 <head>
@@ -8,9 +16,6 @@
    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-<?php if (isset($_GET['logout']) && $_GET['logout'] == 1): ?>
-    <p class="alert">Has cerrado sesión correctamente.</p>
-<?php endif; ?>
 <div class="container">
     <h2>Login</h2>
     <form action="procesos/login.php" method="POST">
@@ -29,7 +34,6 @@
 </div>
     <!--Incluimos el archivo de las alertas-->
     <?php 
-    session_start();
     include 'includes/alertas.php'; ?>
     <script src="js/app.js"></script>
   
