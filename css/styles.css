@@ -23,7 +23,11 @@ body {
     min-height: 100vh;
 }
 
+<<<<<<< HEAD
 /* VALIDACIÓN DE CONTRASEÑA (REGISTRO) */
+=======
+/* ========== ESTILOS DE VALIDACIÓN DE CONTRASEÑA (REGISTRO) ========== */
+>>>>>>> feat/vistas/chats
 .password-requirements {
     background: #f8f9fa;
     border: 1px solid #e0e0e0;
