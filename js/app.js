@@ -1,9 +1,9 @@
-//AJAX para los chats
 // Variables globales
 let chatActivo = null;
 let intervaloActualizacion = null;
 let intervaloConversaciones = null;
 let ultimoTotalMensajes = 0;
+let timeoutBusqueda = null;
 
 // Inicializar cuando carga la página
 document.addEventListener("DOMContentLoaded", function () {
@@ -16,7 +16,36 @@ document.addEventListener("DOMContentLoaded", function () {
   if ("Notification" in window && Notification.permission === "default") {
     Notification.requestPermission();
   }
+
+  // Cerrar menú al hacer clic fuera
+  document.addEventListener("click", function (e) {
+    const menu = document.getElementById("dropdownMenu");
+    const menuBtn = e.target.closest(".icon-btn");
+    if (menu && !menu.contains(e.target) && !menuBtn) {
+      menu.classList.remove("show");
+    }
+  });
+
+  // Búsqueda automática mientras escribe
+  const inputBusqueda = document.getElementById("terminoBusqueda");
+  inputBusqueda.addEventListener("input", function() {
+    // Limpiar timeout anterior
+    if (timeoutBusqueda) {
+      clearTimeout(timeoutBusqueda);
+    }
+    
+    // Esperar 300ms después de que el usuario deje de escribir
+    timeoutBusqueda = setTimeout(() => {
+      buscarUsuarios();
+    }, 300);
+  });
 });
+
+// Toggle menú desplegable
+function toggleMenu() {
+  const menu = document.getElementById("dropdownMenu");
+  menu.classList.toggle("show");
+}
 
 // Cargar lista de conversaciones
 function cargarConversaciones() {
@@ -56,10 +85,11 @@ function mostrarConversaciones(conversaciones) {
         ? `<div class="badge-no-leidos">${conv.mensajes_sin_leer}</div>`
         : "";
 
+    const activeClass =
+      chatActivo && chatActivo.id === conv.id_usuario ? "active" : "";
+
     html += `
-            <div class="conversacion-item" onclick="iniciarChat(${
-              conv.id_usuario
-            }, '${conv.usuario}')">
+            <div class="conversacion-item ${activeClass}" onclick="iniciarChat(${conv.id_usuario}, '${conv.usuario}')">
                 <div class="conversacion-info">
                     <div class="conversacion-nombre">${conv.usuario}</div>
                     <div class="conversacion-ultimo">${escapeHtml(
@@ -92,9 +122,6 @@ function verificarNuevosMensajes(conversaciones) {
         conversacionConNuevos.usuario,
         conversacionConNuevos.ultimo_mensaje || "Nuevo mensaje"
       );
-
-      // Reproducir sonido (opcional)
-      reproducirSonido();
     }
   }
 
@@ -119,10 +146,15 @@ function mostrarNotificacion(titulo, mensaje) {
   }
 }
 
-
 // Buscar usuarios
 function buscarUsuarios() {
-  const termino = document.getElementById("terminoBusqueda").value;
+  const termino = document.getElementById("terminoBusqueda").value.trim();
+  
+  if (termino === "") {
+    cerrarBusqueda();
+    return;
+  }
+
   const formData = new FormData();
   formData.append("termino", termino);
 
@@ -144,6 +176,7 @@ function buscarUsuarios() {
     });
 }
 
+// Mostrar resultados de búsqueda
 function mostrarResultados(resultados) {
   const contenedor = document.getElementById("resultadosBusqueda");
   const lista = document.getElementById("listaResultados");
@@ -152,19 +185,29 @@ function mostrarResultados(resultados) {
     let html = "<ul>";
     resultados.forEach((usuario) => {
       html += `<li>
-                ${usuario.usuario} 
-                <small>(Se unió: ${usuario.fecha_creacion})</small>
+                <div>
+                    <strong>${usuario.usuario}</strong>
+                    <small style="display:block; color: #666;">Se unió: ${usuario.fecha_creacion}</small>
+                </div>
                 <button onclick="iniciarChat(${usuario.id_usuario}, '${usuario.usuario}')">💬 Chatear</button>
             </li>`;
     });
     html += "</ul>";
     lista.innerHTML = html;
-    contenedor.style.display = "block";
   } else {
     lista.innerHTML =
-      "<p>No se encontraron usuarios que coincidan con la búsqueda.</p>";
-    contenedor.style.display = "block";
+      "<p style='padding: 20px; text-align: center; color: #666;'>No se encontraron usuarios.</p>";
   }
+
+  contenedor.classList.add("show");
+}
+
+// Cerrar búsqueda
+function cerrarBusqueda() {
+  const contenedor = document.getElementById("resultadosBusqueda");
+  const input = document.getElementById("terminoBusqueda");
+  contenedor.classList.remove("show");
+  input.value = "";
 }
 
 // Iniciar chat con un usuario
@@ -174,49 +217,18 @@ function iniciarChat(idUsuario, nombreUsuario) {
     nombre: nombreUsuario,
   };
 
-  // Crear o mostrar ventana de chat
-  let ventanaChat = document.getElementById("ventanaChat");
+  // Ocultar pantalla de bienvenida
+  const welcomeScreen = document.getElementById("welcomeScreen");
+  const chatWindow = document.getElementById("chatWindow");
 
-  if (!ventanaChat) {
-    ventanaChat = document.createElement("div");
-    ventanaChat.id = "ventanaChat";
-    ventanaChat.style.cssText = `
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 400px;
-            height: 500px;
-            background: white;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            z-index: 9999;
-        `;
+  welcomeScreen.classList.add("hidden");
+  chatWindow.classList.add("active");
 
-    ventanaChat.innerHTML = `
-            <div style="background: #0077b6; color: white; padding: 15px; border-radius: 10px 10px 0 0; display: flex; justify-content: space-between; align-items: center;">
-                <strong id="nombreContacto"></strong>
-                <button onclick="cerrarChat()" style="background: none; border: none; color: white; font-size: 20px; cursor: pointer;">✕</button>
-            </div>
-            <div id="mensajesContenedor" style="flex: 1; overflow-y: auto; padding: 15px; background: #f5f5f5;"></div>
-            <div style="padding: 10px; background: #f0f0f0; display: flex; gap: 5px;">
-                <input type="text" id="inputMensaje" placeholder="Escribe un mensaje..." 
-                    style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px;"
-                    onkeypress="if(event.key === 'Enter') enviarMensaje()">
-                <button onclick="enviarMensaje()" 
-                    style="padding: 10px 20px; background: #0077b6; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                    Enviar
-                </button>
-            </div>
-        `;
-
-    document.body.appendChild(ventanaChat);
-  }
-
+  // Actualizar nombre del contacto
   document.getElementById("nombreContacto").textContent = nombreUsuario;
-  ventanaChat.style.display = "flex";
+
+  // Cerrar búsqueda si está abierta
+  cerrarBusqueda();
 
   // Cargar mensajes
   cargarMensajes();
@@ -227,22 +239,29 @@ function iniciarChat(idUsuario, nombreUsuario) {
   }
   intervaloActualizacion = setInterval(cargarMensajes, 500);
 
-  // Actualizar lista de conversaciones para quitar el badge
+  // Actualizar lista de conversaciones
   setTimeout(cargarConversaciones, 500);
+
+  // Focus en el input
+  document.getElementById("inputMensaje").focus();
 }
 
 // Cerrar ventana de chat
 function cerrarChat() {
-  const ventanaChat = document.getElementById("ventanaChat");
-  if (ventanaChat) {
-    ventanaChat.style.display = "none";
-  }
+  const welcomeScreen = document.getElementById("welcomeScreen");
+  const chatWindow = document.getElementById("chatWindow");
+
+  welcomeScreen.classList.remove("hidden");
+  chatWindow.classList.remove("active");
 
   if (intervaloActualizacion) {
     clearInterval(intervaloActualizacion);
   }
 
   chatActivo = null;
+
+  // Actualizar conversaciones para quitar la clase active
+  cargarConversaciones();
 }
 
 // Cargar mensajes de la conversación
@@ -268,18 +287,18 @@ function cargarMensajes() {
 // Mostrar mensajes en pantalla
 function mostrarMensajes(mensajes) {
   const contenedor = document.getElementById("mensajesContenedor");
+  const scrollAnterior = contenedor.scrollHeight - contenedor.scrollTop;
 
   if (mensajes.length === 0) {
     contenedor.innerHTML =
-      '<p style="text-align: center; color: #666;">No hay mensajes. ¡Inicia la conversación!</p>';
+      '<div class="no-messages">No hay mensajes. ¡Inicia la conversación!</div>';
     return;
   }
 
   let html = "";
   mensajes.forEach((msg) => {
     const esMio = msg.de_usuario_id != chatActivo.id;
-    const alineacion = esMio ? "flex-end" : "flex-start";
-    const bgColor = esMio ? "#dcf8c6" : "#ffffff";
+    const tipoMensaje = esMio ? "sent" : "received";
 
     const fecha = new Date(msg.fecha_creacion);
     const hora = fecha.toLocaleTimeString("es-MX", {
@@ -288,19 +307,21 @@ function mostrarMensajes(mensajes) {
     });
 
     html += `
-            <div style="display: flex; justify-content: ${alineacion}; margin-bottom: 10px;">
-                <div style="max-width: 70%; padding: 10px; border-radius: 8px; background: ${bgColor}; box-shadow: 0 1px 2px rgba(0,0,0,0.1);">
-                    <p style="margin: 0; word-wrap: break-word;">${escapeHtml(
-                      msg.mensaje
-                    )}</p>
-                    <small style="color: #666; font-size: 11px;">${hora}</small>
+            <div class="message-bubble ${tipoMensaje}">
+                <div class="message-content">
+                    <p class="message-text">${escapeHtml(msg.mensaje)}</p>
+                    <div class="message-time">${hora}</div>
                 </div>
             </div>
         `;
   });
 
   contenedor.innerHTML = html;
-  contenedor.scrollTop = contenedor.scrollHeight;
+
+  // Hacer scroll solo si estábamos cerca del final
+  if (scrollAnterior < 150) {
+    contenedor.scrollTop = contenedor.scrollHeight;
+  }
 }
 
 // Enviar mensaje
@@ -325,7 +346,7 @@ function enviarMensaje() {
       if (data.success) {
         input.value = "";
         cargarMensajes();
-        cargarConversaciones(); // Actualizar lista de conversaciones
+        cargarConversaciones();
       } else {
         alert("Error al enviar: " + (data.error || "Error desconocido"));
       }
@@ -348,19 +369,18 @@ function escapeHtml(text) {
   return text.replace(/[&<>"']/g, (m) => map[m]);
 }
 
-
-//ocultar o mostrar contraseña
+// Ocultar o mostrar contraseña (para login/registro)
 function togglePassword(inputId, button) {
-    //const pw = document.getElementById("contrasena");
-    //const btn = document.querySelector(".toggle-pw");
-    const pw = inputId ? document.getElementById(inputId) : document.getElementById("contrasena");
-    const btn = button ? button : document.querySelector(".toggle-pw");
+  const pw = inputId
+    ? document.getElementById(inputId)
+    : document.getElementById("contrasena");
+  const btn = button ? button : document.querySelector(".toggle-pw");
 
-if (pw.type === "password") {
+  if (pw.type === "password") {
     pw.type = "text";
     btn.textContent = "Ocultar";
-    } else {
-        pw.type = "password";
-        btn.textContent = "Mostrar";
-    }
+  } else {
+    pw.type = "password";
+    btn.textContent = "Mostrar";
+  }
 }

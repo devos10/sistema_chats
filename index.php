@@ -13,7 +13,6 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="css/styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -21,23 +20,22 @@ if (isset($_GET['logout']) && $_GET['logout'] == 1) {
         <h2>Login</h2>
         <form action="procesos/login.php" method="POST">
             <label for="usuario">Usuario:</label>
-            <input type="text" id="usuario" name="usuario" required><br><br>
+            <input type="text" id="usuario" name="usuario" required>
 
             <label for="contrasena">Contraseña:</label>
             <div class="input-group">
                 <input type="password" id="contrasena" name="contrasena" required>
-                <button type="button" class="toggle-pw" onclick="togglePassword()">Mostrar</button>
+                <button type="button" class="toggle-pw-perfil" onclick="togglePassword('contrasena', this)">Mostrar</button>
             </div>
 
             <input type="submit" value="Login">
         </form>
-        <a href="registro.php">Registrarse</a>
+        <a href="registro.php" class="btn-secondary">Registrarse</a>
     </div>
-    <!--Incluimos el archivo de las alertas-->
-    <?php
-    include 'includes/alertas.php'; ?>
-    <script src="js/app.js"></script>
 
+    <?php include 'includes/alertas.php'; ?>
+    
+    <script src="js/app.js"></script>
 </body>
 
 </html>
