@@ -23,7 +23,7 @@ body {
     min-height: 100vh;
 }
 
-/* ========== ESTILOS DE VALIDACIÓN DE CONTRASEÑA (REGISTRO) ========== */
+/* VALIDACIÓN DE CONTRASEÑA (REGISTRO)*/
 .password-requirements {
     background: #f8f9fa;
     border: 1px solid #e0e0e0;
@@ -90,7 +90,7 @@ body {
     width: 100%;
 }
 
-/* ========== CONTENEDOR PRINCIPAL DEL CHAT ========== */
+/* CONTENEDOR PRINCIPAL DEL CHAT */
 .chat-container {
     display: flex;
     width: 95%;
