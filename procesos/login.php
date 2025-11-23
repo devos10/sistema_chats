@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once __DIR__ . '/../db/UsuarioBD.php';
+require_once __DIR__ . '/../db/usuariobd.php';
 require_once __DIR__ . '/../includes/agregar_alerta.php';
 // Evita errores si se entra por GET o sin datos
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
