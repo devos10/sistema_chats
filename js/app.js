@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
   cargarConversaciones();
 
   // Actualizar conversaciones cada 0.5 segundos
-  intervaloConversaciones = setInterval(cargarConversaciones, 500);
+  intervaloConversaciones = setInterval(cargarConversaciones, 3000);
 
   // Solicitar permiso para notificaciones
   if ("Notification" in window && Notification.permission === "default") {
@@ -237,10 +237,10 @@ function iniciarChat(idUsuario, nombreUsuario) {
   if (intervaloActualizacion) {
     clearInterval(intervaloActualizacion);
   }
-  intervaloActualizacion = setInterval(cargarMensajes, 500);
+  intervaloActualizacion = setInterval(cargarMensajes, 3000);
 
   // Actualizar lista de conversaciones
-  setTimeout(cargarConversaciones, 500);
+  setTimeout(cargarConversaciones, 3000);
 
   // Focus en el input
   document.getElementById("inputMensaje").focus();
