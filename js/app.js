@@ -549,8 +549,6 @@ function validarFormulario(event) {
   return true;
 }
 
-// ========== FUNCIONES PARA VALIDACIÓN DE PERFIL ==========
-
 // Validar contraseña en tiempo real (PERFIL)
 function validarContraseñaPerfil() {
   const password = document.getElementById('contraseña').value;
